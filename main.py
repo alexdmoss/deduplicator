@@ -84,6 +84,7 @@ def build_hash_file_list(folder: str) -> dict:
         for filename in list_of_files:
             path = os.path.join(dir_name, filename)
             file_hash = hash_file(path)
+            logger.debug(f"Hash of file {path} was {file_hash}")
             if file_hash in all_files:
                 all_files[file_hash].append(path)
             else:
@@ -128,16 +129,16 @@ def get_timestamp() -> str:
     return strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
 
-def hash_file(path, blocksize=65536):
+def hash_file(path, blocksize=2**20):
+    m = hashlib.md5()
     try:
-        afile = open(path, 'rb')
-        hasher = hashlib.md5()
-        buf = afile.read(blocksize)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = afile.read(blocksize)
-        afile.close()
-        return hasher.hexdigest()
+        with open(path, "rb") as f:
+            while True:
+                buf = f.read(blocksize)
+                if not buf:
+                    break
+                m.update(buf)
+        return m.hexdigest()
     except FileNotFoundError:
         logger.error("File not found: " + path)
         return time.time() + random.randint(1, 1000)
