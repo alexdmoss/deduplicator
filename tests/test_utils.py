@@ -20,11 +20,3 @@ def test_hash_file_missing(mocker, caplog):
     test_missing_file = "./mocks/not-there.jpg"
     hash_file(test_missing_file)
     assert 'File not found' in caplog.text
-
-
-def test_hash_file_cannot_open(mocker, caplog):
-    test_readonly_file = "/etc/shadow"          # @TODO: figure out how to mock OSError as this is dumb
-    open_file = mocker.patch('os.read')
-    open_file.side_effect = OSError
-    hash_file(test_readonly_file)
-    assert 'File could not be opened' in caplog.text
