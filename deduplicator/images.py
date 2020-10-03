@@ -9,6 +9,9 @@ from fuzzywuzzy import fuzz
 from dataclasses import dataclass
 
 
+FUZZINESS = 80
+
+
 @dataclass
 class ImageResult:
     file: str
@@ -31,7 +34,7 @@ def find_duplicate_images(path):
         else:
             for key in hashed_files.keys():
                 match = fuzz.ratio(result.hash, key)
-                if match > 90:      # label dupe if 90% confidence in similarity of image hashes
+                if match > FUZZINESS:      # label dupe if 90% confidence in similarity of image hashes
                     hashed_files[key].append(output_data)
                     logging.debug(f"Ratio was {match} for {result.file}")
                     break
