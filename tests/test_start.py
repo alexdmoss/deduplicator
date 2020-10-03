@@ -22,6 +22,16 @@ def test_quiet():
     assert result.exit_code == 0
 
 
+def test_image_mode():
+    logging.getLogger("").handlers = []
+    runner = CliRunner()
+    result = runner.invoke(start, ['--dir=./mocks', '--images'])
+    assert "Script started" in result.output
+    assert "Visual image comparison is enabled" in result.output
+    assert result.exception is None
+    assert result.exit_code == 0
+
+
 def test_delete_mode(mocker):
     logging.getLogger("").handlers = []
     mocker.patch("deduplicator.start.delete_duplicates", return_value=[])

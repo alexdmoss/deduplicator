@@ -12,10 +12,11 @@ from deduplicator.parse import remove_files_with_no_duplicates
 @click.command()
 @click.option("--dir", "-d", help="Starting directory for search", type=str, required=True)
 @click.option("--output", "-o", help="Output file for duplicates found", type=str)
+@click.option("--images", "-i", flag_value="images", help="Compare images for visual similarities too", default=False)
 @click.option("--delete", "-D", flag_value="delete", help="Remove duplicates or not")
 @click.option("--debug", "-v", flag_value="debug", help="Turn on debugging", default=False)
 @click.option("--quiet", "-q", flag_value="quiet", help="Quiet mode - only prints files to be deleted", default=False)
-def start(dir, output, delete, debug, quiet):
+def start(dir, output, images, delete, debug, quiet):
     logging.basicConfig(stream=sys.stdout, level=logging.INFO,
                         format='-> [%(levelname)s] [%(asctime)s] %(message)s', datefmt='%Y-%m-%d %H:%M')
     logger = logging.getLogger(__name__)
@@ -28,6 +29,9 @@ def start(dir, output, delete, debug, quiet):
         logger.debug("Debug logging is enabled")
 
     logger.info("Script started at " + get_timestamp() + ". Starting directory: " + dir)
+
+    if images:
+        logger.info("Visual image comparison is enabled")
 
     if delete:
         logger.info("DELETE mode is enabled - duplicates files will be removed")
