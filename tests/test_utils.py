@@ -1,12 +1,4 @@
-from freezegun import freeze_time
-
-from deduplicator.utils import get_timestamp, hash_file
-
-
-@freeze_time("2020-10-02 13:37:42")
-def test_get_timestamp():
-    ts = get_timestamp()
-    assert ts == "2020-10-02 13:37:42"
+from deduplicator.utils import hash_file
 
 
 def test_hash_file(mocker, caplog):

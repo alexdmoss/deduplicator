@@ -4,7 +4,6 @@ import sys
 from pathlib import Path
 
 from deduplicator.results import print_results, save_results
-from deduplicator.utils import get_timestamp
 from deduplicator.files import list_all_files, hash_files, delete_duplicates
 from deduplicator.parse import remove_files_with_no_duplicates
 from deduplicator.images import find_duplicate_images
@@ -29,7 +28,7 @@ def start(dir, output, images, delete, debug, quiet):
         logging.getLogger().setLevel(logging.DEBUG)
         logger.debug("Debug logging is enabled")
 
-    logger.info("Script started at " + get_timestamp() + ". Starting directory: " + dir)
+    logger.info("Script started. Starting directory: " + dir)
 
     if images:
         logger.info("Visual image comparison is enabled")
@@ -62,4 +61,4 @@ def start(dir, output, images, delete, debug, quiet):
         else:
             logger.warning(f"Some duplicate files remain: {len(files)}")
 
-    logger.info("Script completed at " + get_timestamp())
+    logger.info("Script completed")

@@ -18,8 +18,6 @@ pytest-cov = "*"
 pytest-mock = "*"
 pytest-watch = "*"
 flake8 = "*"
-autopep8 = "*"
-freezegun = "*"
 
 [requires]
 python_version = "3.8"

@@ -24,14 +24,14 @@ def test_print_results(caplog):
 
     print_results(test_data)
 
-    assert 'Found duplicate: ./test/barca_dupe_level_0.jpg' in caplog.text
-    assert 'Found duplicate: ./test/barca_dupe_level_0.jpg' in caplog.text
-    assert 'Found duplicate: ./test/level_1/barca_dupe_level_1.jpg' in caplog.text
-    assert 'Found duplicate: ./test/level_1/level_2/barca_dupe_level_2.jpg' in caplog.text
-    assert 'Found duplicate: ./test/lol_dupe_level_0.jpg' in caplog.text
-    assert 'Found duplicate: ./test/level_1/lol_dupe_level_1.jpg' in caplog.text
-    assert 'Found duplicate: ./test/what_dupe_level_0.jpg' in caplog.text
-    assert 'Found duplicate: ./test/level_1/level_2/what_dupe_level_2.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/barca_dupe_level_0.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/barca_dupe_level_0.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/level_1/barca_dupe_level_1.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/level_1/level_2/barca_dupe_level_2.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/lol_dupe_level_0.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/level_1/lol_dupe_level_1.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/what_dupe_level_0.jpg' in caplog.text
+    assert 'Found duplicate file: ./test/level_1/level_2/what_dupe_level_2.jpg' in caplog.text
 
 
 def test_print_empty_results(caplog):

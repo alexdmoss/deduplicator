@@ -6,33 +6,36 @@ import os
 from PIL import Image, ExifTags
 import imagehash
 from fuzzywuzzy import fuzz
+from dataclasses import dataclass
 
-logging.basicConfig(level=logging.INFO,
-                    format='-> [%(levelname)s] [%(asctime)s] %(message)s',
-                    datefmt='%Y-%m-%d %H:%M')
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)          # @TODO: sort this out properly
+@dataclass
+class ImageResult:
+    file: str
+    hash: str
+    image_size: str
+    file_size: str
+    capture_time: str
 
 
 def find_duplicate_images(path):
     hashed_files = {}
     files = get_image_files(path)
+
     for result in hash_files_parallel(files, num_processes=None):
-        # result[1] is the hash, result[0] is the file
-        # result[2] is size, result[3] is dimensions, result[4] may be timestamp
-        output_data = [result[0], result[1], result[2]]
+        output_data = [result.file, result.file_size, result.image_size]
 
         # first entry, initialise return dict
         if not hashed_files:
-            hashed_files[result[1]] = [output_data]
+            hashed_files[result.hash] = [output_data]
         else:
             for key in hashed_files.keys():
-                match = fuzz.ratio(result[1], key)
+                match = fuzz.ratio(result.hash, key)
                 if match > 90:      # label dupe if 90% confidence in similarity of image hashes
                     hashed_files[key].append(output_data)
-                    logger.debug(f"Ratio was {match} for {result[0]}")
+                    logging.debug(f"Ratio was {match} for {result.file}")
                     break
+            hashed_files[result.hash] = [output_data]
 
     return hashed_files
 
@@ -82,10 +85,10 @@ def hash_file(file):
 
         hashes = ''.join(sorted(hashes))
 
-        logger.debug(f"Hashed {file}")
-        return file, hashes, file_size, image_size, capture_time
+        logging.debug(f"Hashed {file}")
+        return ImageResult(file=file, hash=hashes, file_size=file_size, image_size=image_size, capture_time=capture_time)
     except OSError:
-        logger.warning(f"Unable to open {file}")
+        logging.warning(f"Unable to open {file}")
         return None
 
 
