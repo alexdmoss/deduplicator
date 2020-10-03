@@ -5,7 +5,7 @@ from pathlib import Path
 
 from deduplicator.results import print_results, save_results
 from deduplicator.utils import get_timestamp
-from deduplicator.files import build_hash_file_list, delete_duplicates
+from deduplicator.files import list_all_files, hash_files, delete_duplicates
 from deduplicator.parse import remove_files_with_no_duplicates
 
 
@@ -40,7 +40,9 @@ def start(dir, output, images, delete, debug, quiet):
         logger.fatal(f"{dir} is not a valid path, please verify")
         sys.exit(1)
 
-    hash_of_all_files = build_hash_file_list(dir)
+    all_files = list_all_files(dir)
+
+    hash_of_all_files = hash_files(all_files)
 
     duplicates = remove_files_with_no_duplicates(hash_of_all_files)
 

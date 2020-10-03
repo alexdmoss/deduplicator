@@ -25,7 +25,7 @@ def test_quiet():
 def test_image_mode():
     logging.getLogger("").handlers = []
     runner = CliRunner()
-    result = runner.invoke(start, ['--dir=./mocks', '--images'])
+    result = runner.invoke(start, ['--dir=./mocks/image_compare', '--images'])
     assert "Script started" in result.output
     assert "Visual image comparison is enabled" in result.output
     assert result.exception is None

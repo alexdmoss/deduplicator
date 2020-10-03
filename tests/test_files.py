@@ -1,16 +1,10 @@
 import logging
-from deduplicator.files import build_hash_file_list, delete_duplicates
+from deduplicator.files import list_all_files, hash_files, delete_duplicates
 
 
-def test_build_hash_file_list():
+def test_list_all_files():
     test_data = "./mocks"
-    files = build_hash_file_list(test_data)
-
-    all_files = []
-
-    for files in files.values():
-        all_files = all_files + files
-
+    all_files = list_all_files(test_data)
     assert './mocks/barca_dupe_level_0.jpg' in all_files
     assert './mocks/level_1/barca_dupe_level_1.jpg' in all_files
     assert './mocks/lol_dupe_level_0.jpg' in all_files
@@ -21,7 +15,23 @@ def test_build_hash_file_list():
     assert './mocks/level_1/beans_no_dupe_level_1.jpeg' in all_files
     assert './mocks' not in all_files
     assert 'random-file' not in all_files
-    assert len(all_files) == 9
+    assert len(all_files) == 14
+
+
+def test_hash_files():
+    test_data = ['./mocks/barca_dupe_level_0.jpg',
+                 './mocks/level_1/barca_dupe_level_1.jpg',
+                 './mocks/level_1/level_2/barca_dupe_level_2.jpg',
+                 './mocks/lol_dupe_level_0.jpg',
+                 './mocks/level_1/lol_dupe_level_1.jpg',
+                 './mocks/what_dupe_level_0.jpg',
+                 './mocks/level_1/level_2/what_dupe_level_2.jpg']
+    hashed_files = hash_files(test_data)
+
+    keys = hashed_files.keys()
+    assert 'e8114e843bc16f5e895d6aa752bf3584' in keys
+    assert '1d626efa9c786692344142cd7ef982c1' in keys
+    assert '3300d0cec39386604c5e387404660a05' in keys
 
 
 def test_delete_matched_duplicates(caplog):
