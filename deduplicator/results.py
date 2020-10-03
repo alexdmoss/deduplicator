@@ -12,7 +12,7 @@ def print_results(results: dict):
     for x in results:
         if (len(results[x]) > 1):
             for result in results[x]:
-                logger.info("Found duplicate: " + result)
+                logger.info(f"Found duplicate: {result}")
 
 
 def save_results(results: dict, filename: str):

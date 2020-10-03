@@ -5,6 +5,11 @@ name = "pypi"
 
 [packages]
 click = "*"
+opencv-python = "*"
+ImageHash = "*"
+python-magic = "*"
+fuzzywuzzy = "*"
+python-Levenshtein = "*"
 
 [dev-packages]
 deduplicator = {editable = true,path = "."}

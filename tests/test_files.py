@@ -15,7 +15,7 @@ def test_list_all_files():
     assert './mocks/level_1/beans_no_dupe_level_1.jpeg' in all_files
     assert './mocks' not in all_files
     assert 'random-file' not in all_files
-    assert len(all_files) == 14
+    assert len(all_files) == 15
 
 
 def test_hash_files():
