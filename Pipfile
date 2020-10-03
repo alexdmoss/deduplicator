@@ -4,12 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+click = "*"
 
 [dev-packages]
-
-flake8 = "*"
+deduplicator = {editable = true,path = "."}
 pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
 pytest-watch = "*"
+flake8 = "*"
+autopep8 = "*"
+freezegun = "*"
 
 [requires]
 python_version = "3.8"
