@@ -10,7 +10,7 @@ ImageHash = "*"
 python-magic = "*"
 fuzzywuzzy = "*"
 python-Levenshtein = "*"
-pillow = ">=8.1.1"
+pillow = ">=8.2.0"
 
 [dev-packages]
 deduplicator = {editable = true,path = "."}
