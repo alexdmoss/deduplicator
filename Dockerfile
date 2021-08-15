@@ -3,7 +3,7 @@ ADD main.py /app/main.py
 ADD test_main.py /app/test_main.py
 ADD Pipfile /app/Pipfile
 ADD Pipfile.lock /app/Pipfile.lock
-ADD test/ /app/test/
+ADD tests/ /app/tests/
 WORKDIR /app
 RUN pip install pipenv=='2018.11.26'
 RUN pipenv lock -r > requirements.txt

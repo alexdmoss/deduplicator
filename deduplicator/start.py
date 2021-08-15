@@ -1,5 +1,4 @@
 import click
-import logging
 import sys
 from pathlib import Path
 
@@ -7,6 +6,16 @@ from deduplicator.results import print_results, save_results
 from deduplicator.files import list_all_files, hash_files, delete_duplicates
 from deduplicator.parse import remove_files_with_no_duplicates
 from deduplicator.images import find_duplicate_images
+
+import json
+import logging
+from logging.config import dictConfig
+
+logger = logging.getLogger(__name__)
+
+with open('./logging.json') as file:
+    config_dict = json.load(file)
+    dictConfig(config_dict)
 
 
 @click.command()
@@ -17,17 +26,14 @@ from deduplicator.images import find_duplicate_images
 @click.option("--debug", "-v", flag_value="debug", help="Turn on debugging", default=False)
 @click.option("--quiet", "-q", flag_value="quiet", help="Quiet mode - only prints files to be deleted", default=False)
 def start(dir, output, images, delete, debug, quiet):
-    logging.basicConfig(stream=sys.stdout, level=logging.INFO,
-                        format='-> [%(levelname)s] [%(asctime)s] %(message)s', datefmt='%Y-%m-%d %H:%M')
-    logger = logging.getLogger(__name__)
 
-    if quiet:
-        logging.getLogger().setLevel(logging.ERROR)
+    # if quiet:
+    #     logger.set_quiet()
 
-    if debug:
-        logging.getLogger().setLevel(logging.DEBUG)
-        logger.debug("Debug logging is enabled")
+    # if debug:
+    #     logger.set_debug()
 
+    logger.debug("Debug logging is enabled")
     logger.info("Script started. Starting directory: " + dir)
 
     if images:

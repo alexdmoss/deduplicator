@@ -2,7 +2,7 @@
 
 Some python to find (and delete) duplicate files.
 
-Code for image duplicate detection pinched from https://github.com/philipbl/duplicate-images - I didn't want the mongoDB store, but the pHashing was super-useful.
+Code for image duplicate detection pinched from [https://github.com/philipbl/duplicate-images](https://github.com/philipbl/duplicate-images) - I didn't want the mongoDB store, but the pHashing was super-useful.
 
 ---
 

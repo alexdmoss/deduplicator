@@ -11,6 +11,7 @@ python-magic = "*"
 fuzzywuzzy = "*"
 python-Levenshtein = "*"
 pillow = ">=8.2.0"
+python-json-logger = "*"
 
 [dev-packages]
 deduplicator = {editable = true,path = "."}
