@@ -33,10 +33,45 @@ If you want to edit the "fuzziness" of the image search, the `FUZZINESS` variabl
 
 ## Data Setup
 
-How you arrange the files in the one directory it searches affects how the results are displayed
+How you arrange the files in the one directory it searches affects how the results are displayed - they are listed in the order they are found, which effectively becomes alphabetically. To illustrate:
 
-## TODO
+```txt
++-- backups
+|   +-- duplicate-1.jpg
++-- for-web
+|   +-- duplicate-2.jpg
++-- originals
+|   +-- duplicate.jpg
+```
+
+Because `backups` comes ahead of `for-web` and `originals`, the results with be listed as `backups/duplicate-1.jpg, for-web/duplicate-2.jpg, originals/duplicate.jpg`, and **only** the backup will be kept if you run with `--delete` set.
+
+In this example, `originals` might be the highest quality / correctly organised image that you want to keep, so some renaming would be a good idea:
+
+```txt
++-- 01-originals
+|   +-- duplicate.jpg
++-- 02-backups
+|   +-- duplicate-1.jpg
++-- 03-for-web
+|   +-- duplicate-2.jpg
+```
+
+Now `01-originals/duplicate.jpg` will be kept, and the other two duplicates deleted. Happy days!
+
+---
+
+## To Do
 
 - [ ] Fix dockerised version and add instructions
 - [ ] Finish test coverage
 - [ ] Allow multiple paths?
+
+---
+
+## Results
+
+| State                      | # Files | Execution Time |
+| -------------------------- | ------- | -------------- |
+| Before file dupe detection | 66,497  | N/A            |
+| After file dupe dedection  | 27,153  | ~12m30s        |
