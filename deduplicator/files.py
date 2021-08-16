@@ -28,10 +28,11 @@ def hash_files(list_of_files):
 
 
 def delete_duplicates(results: dict):
-    for x in results:
-        if (len(results[x]) > 1):
-            log.info("[stubbed] Deleting " + results[x][-1])
-            # os.remove(results[x][-1])
+    for result in results.values():
+        result.remove(result[0])
+        for file in result:
+            log.info(f"Deleting {file}")
+            os.remove(file)
     return results
 
 

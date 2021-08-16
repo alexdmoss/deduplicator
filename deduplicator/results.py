@@ -6,8 +6,7 @@ log = logging.getLogger(__name__)
 
 def print_duplicate_results(results: dict):
     for x in results:
-        for result in results[x]:
-            log.info(f"{result}")
+        log.info(f"Duplicate Files: {results[x]}")
 
 
 def print_image_results(results: dict):
@@ -16,13 +15,11 @@ def print_image_results(results: dict):
 
 
 def save_duplicate_results(filename: str, results: dict):
-    log.debug(f"Saving output to {filename}")
+    log.info(f"Saving output to {filename}. This contains the Original PLUS its duplicates listed on each line")
     output = Path(filename)
     with output.open(mode="w+") as out:
         for x in results:
-            for result in results[x]:
-                out.write(str(result) + "\n")
-            out.write("\n")     # newline to distinguish next group of files
+            out.write(f"{(', '.join(results[x]))}\n")
 
 
 def save_image_results(filename: str, results: dict):

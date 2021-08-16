@@ -22,8 +22,7 @@ log = logging.getLogger(__name__)
 @click.option("--output", "-o", help="Output file for duplicates found", type=str)
 @click.option("--images", "-i", flag_value="images", help="Compare images for visual similarities too", default=False)
 @click.option("--delete", "-D", flag_value="delete", help="Remove duplicates or not")
-@click.option("--quiet", "-q", flag_value="quiet", help="Quiet mode - only prints files to be deleted", default=False)
-def start(dir, output, images, delete, quiet):
+def start(dir, output, images, delete):
 
     log.info("Script started. Starting directory: " + dir)
 
@@ -50,12 +49,8 @@ def start(dir, output, images, delete, quiet):
         print_duplicate_results(duplicates)
         if output:
             save_duplicate_results(output, duplicates)
+        if delete:
+            delete_duplicates(duplicates)
 
-    if delete:
-        files = delete_duplicates(duplicates)
-        if len(files) == 0:
-            log.info("All duplicate files deleted")
-        else:
-            log.warning(f"Some duplicate files remain: {len(files)}")
 
     log.info("Script completed")
