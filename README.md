@@ -8,20 +8,19 @@ Code for image duplicate detection pinched from [https://github.com/philipbl/dup
 
 ## Usage
 
-Without arguments you will be prompted with the help.
+Uses [Poetry](https://python-poetry.org/docs/), so `poetry install` and then:
 
-There is a bash wrapper script because I am lazy:
+1. `poetry run deduplicator`
+2. `poetry run pytest`
 
-- `./go run -d=DIR` will scan DIR for duplicates
-- `./go run -d=DIR -o=output.txt` will scan DIR for duplicates and output list of files found to output.txt
-- Adding the `--images` flag will ignore non-image files, and attempt to compare images based on size, content, etc. If you run this against a large directory of images **it will thrash your CPU for a while**.
-  - you want to change the `FUZZINESS` variable at the top of `./deduplicator/images.py` if you're getting lots of false matches. I found 90% was letting too much through, and experimented before setting on 80.
+Adding the `--images` flag will ignore non-image files, and attempt to compare images based on size, content, etc. If you run this against a large directory of images **it will thrash your CPU for a while**.
 
-- if you don't want to mess about with Python/pipenv, then `./go build` will create a dockerised version that can be run in the same way as `./go run` but with `./go docker-run`
-  - note that for saving of output with Docker using the `./go` wrapper, it expects -o to be a file in the `./output/` directory, e.g.
-    `./go run-docker -d=test/ -o=./output/results.txt`
+If you want to edit the "fuzziness" of the image search, the `FUZZINESS` variable is currently hard-coded at the top of `./deduplicator/images.py` if you're getting lots of false matches. I found 90% was letting too much through, and experimented before setting on 80.
 
 ## TODO
 
+- [ ] Fix debug logging not working
+- [ ] Fix dockerised version and add instructions
+- [ ] Makefile
 - [ ] Finish test coverage
-- [ ] Allow multiple paths
+- [ ] Allow multiple paths?

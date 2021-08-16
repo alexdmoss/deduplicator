@@ -1,3 +1,27 @@
+[tool.poetry]
+name = "deduplicator"
+version = "0.1.0"
+description = "Finds and optionally deletes duplicate files and similar images"
+authors = ["Alex M <alex@mosstech.io>"]
+license = "MIT"
+
+[tool.poetry.scripts]
+deduplicator = "deduplicator.main:start"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.0.1"
+fuzzywuzzy = "^0.18.0"
+ImageHash = "^4.2.1"
+python-magic = "^0.4.24"
+python-json-logger = "^2.0.2"
+python-Levenshtein = "^0.12.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+flake8 = "^3.9.2"
+pytest-cov = "^2.12.1"
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

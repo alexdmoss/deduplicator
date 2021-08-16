@@ -1,39 +1,59 @@
 {
-    "version": 1,
-    "disable_existing_loggers": true,
-    "formatters": {
-      "logstash_formatter": {
-        "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
-        "format": "%(levelname) %(message)s",
-        "timestamp": true,
-        "rename_fields": {
-          "levelname": "severity",
-          "msg": "message"
-        }
-      }
-    },
-    "handlers": {
-      "json": {
-        "formatter": "logstash_formatter",
-        "class": "logging.StreamHandler",
-        "stream": "ext://sys.stdout"
-      }
-    },
-    "loggers": {
-      "application": {
-        "handlers": [
-          "json"
-        ],
-        "level": "INFO",
-        "propagate": true
-      },
-      "root": {
-        "level": "INFO",
-        "propagate": true,
-        "handlers": [
-          "json"
-        ]
+  "version": 1,
+  "disable_existing_loggers": true,
+  "formatters": {
+    "json_formatter": {
+      "()": "pythonjsonlogger.jsonlogger.JsonFormatter",
+      "format": "%(timestamp)s %(levelname)s %(name)s %(message)s",
+      "timestamp": true,
+      "rename_fields": {
+        "levelname": "severity",
+        "msg": "message"
       }
     }
+  },
+  "handlers": {
+    "json": {
+      "formatter": "json_formatter",
+      "class": "logging.StreamHandler",
+      "stream": "ext://sys.stdout"
+    }
+  },
+  "loggers": {
+    "deduplicator.images": {
+      "handlers": [
+        "json"
+      ],
+      "level": "DEBUG",
+      "propagate": false
+    },
+    "deduplicator.files": {
+      "handlers": [
+        "json"
+      ],
+      "level": "INFO",
+      "propagate": false
+    },
+    "deduplicator.results": {
+      "handlers": [
+        "json"
+      ],
+      "level": "INFO",
+      "propagate": false
+    },
+    "deduplicator.utils": {
+      "handlers": [
+        "json"
+      ],
+      "level": "INFO",
+      "propagate": false
+    },
+    "root": {
+      "level": "INFO",
+      "propagate": true,
+      "handlers": [
+        "json"
+      ]
+    }
   }
-  
+}

@@ -1,27 +1,33 @@
 import logging
 from pathlib import Path
 
+log = logging.getLogger(__name__)
 
-def print_results(results: dict):
+
+def print_duplicate_results(results: dict):
     for x in results:
-        if (len(results[x]) > 1):
-            for result in results[x]:
-                if len(result) == 3:
-                    logging.info(f"Found potential duplicate image: {result[0]}, size: {result[1]}, dimensions: {result[2]}")
-                else:
-                    logging.info(f"Found duplicate file: {result}")
+        for result in results[x]:
+            log.info(f"{result}")
 
 
-def save_results(results: dict, filename: str):
-    logging.info(f"Saving output to {filename}")
+def print_image_results(results: dict):
+    for result in results:
+        log.info(f"{result[1]} is a {result[0]} match for {result[2]}")
+
+
+def save_duplicate_results(filename: str, results: dict):
+    log.debug(f"Saving output to {filename}")
     output = Path(filename)
     with output.open(mode="w+") as out:
         for x in results:
-            if (len(results[x]) > 1):
-                for result in results[x]:
-                    if len(result) == 3:
-                        out.write(f"{result[0]}, {result[1]}, {result[2]}\n")
-                    else:
-                        out.write(result + "\n")
-                # newline to distinguish next group of files
-                out.write("\n")
+            for result in results[x]:
+                out.write(str(result) + "\n")
+            out.write("\n")     # newline to distinguish next group of files
+
+
+def save_image_results(filename: str, results: dict):
+    log.debug(f"Saving output to {filename}")
+    output = Path(filename)
+    with output.open(mode="w+") as out:
+        for result in results:
+            out.write(str(result) + "\n")

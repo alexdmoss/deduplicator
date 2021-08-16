@@ -1,5 +1,4 @@
 import logging
-# from cv2 import imread
 import magic
 import concurrent.futures
 import os
@@ -9,8 +8,9 @@ from fuzzywuzzy import fuzz
 from dataclasses import dataclass
 
 
-FUZZINESS = 80
+log = logging.getLogger(__name__)
 
+FUZZINESS = 80
 
 @dataclass
 class ImageResult:
@@ -23,24 +23,36 @@ class ImageResult:
 
 def find_duplicate_images(path):
     hashed_files = {}
+    matches = []
+    
     files = get_image_files(path)
 
     for result in hash_files_parallel(files, num_processes=None):
-        output_data = [result.file, result.file_size, result.image_size]
+        output_data = {
+            "file": result.file,
+            "size": result.file_size,
+            "resolution": result.image_size,
+            "taken": result.capture_time,
+        }
 
-        # first entry, initialise return dict
-        if not hashed_files:
-            hashed_files[result.hash] = [output_data]
+        if result.hash not in hashed_files:
+            hashed_files[result.hash] = output_data
         else:
-            for key in hashed_files.keys():
-                match = fuzz.ratio(result.hash, key)
-                if match > FUZZINESS:      # label dupe if 90% confidence in similarity of image hashes
-                    hashed_files[key].append(output_data)
-                    logging.debug(f"Ratio was {match} for {result.file}")
-                    break
-            hashed_files[result.hash] = [output_data]
+            log.info(f"{output_data['file']} is a DUPLICATE of {hashed_files[result.hash]['file']}, and should be picked up by the hash-based matching")
 
-    return hashed_files
+    all_hashes = list(hashed_files.keys())
+
+    for hash_to_test in all_hashes:
+        for hash, data in hashed_files.items():
+            file_to_test = hashed_files[hash_to_test]['file']
+            this_file = data['file']
+            if file_to_test != this_file:
+                confidence = fuzz.ratio(hash_to_test, hash)
+                if confidence > FUZZINESS:
+                    data["confidence"] = confidence
+                    matches.append([str(confidence)+'%', file_to_test, this_file])
+
+    return matches
 
 
 def hash_files_parallel(files, num_processes=None):
@@ -60,6 +72,7 @@ def is_image(file_name):
         return False
 
 
+# TODO: could use existing list of files rather than re-walk
 def get_image_files(path):
     path = os.path.abspath(path)
     for root, dirs, files in os.walk(path):
@@ -88,10 +101,9 @@ def hash_file(file):
 
         hashes = ''.join(sorted(hashes))
 
-        logging.debug(f"Hashed {file}")
         return ImageResult(file=file, hash=hashes, file_size=file_size, image_size=image_size, capture_time=capture_time)
     except OSError:
-        logging.warning(f"Unable to open {file}")
+        log.warning(f"Unable to open {file}")
         return None
 
 

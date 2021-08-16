@@ -3,6 +3,8 @@ import hashlib
 import random
 import logging
 
+log = logging.getLogger(__name__)
+
 
 def hash_file(path, blocksize=2**20):
     m = hashlib.md5()
@@ -13,10 +15,11 @@ def hash_file(path, blocksize=2**20):
                 if not buf:
                     break
                 m.update(buf)
+        log.debug(f"Hashed {path}")
         return m.hexdigest()
     except FileNotFoundError:
-        logging.error("File not found: " + path)
+        log.error("File not found: " + path)
         return time() + random.randint(1, 1000)
     except OSError:  # pragma: no cover (@TODO: mocking doesn't seem to work)
-        logging.error("File could not be opened: " + path)
+        log.error("File could not be opened: " + path)
         return time() + random.randint(1, 1000)
