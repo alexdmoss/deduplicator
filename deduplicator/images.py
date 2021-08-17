@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 log = logging.getLogger(__name__)
 
-FUZZINESS = 80
+FUZZINESS = 95
 
 @dataclass
 class ImageResult:
@@ -21,12 +21,13 @@ class ImageResult:
     capture_time: str
 
 
-def find_duplicate_images(path):
+def find_and_hash_images(path):
     hashed_files = {}
-    matches = []
     
+    log.info("Building list of all supported image files")
     files = get_image_files(path)
 
+    log.info("Hashing all image files")
     for result in hash_files_parallel(files, num_processes=None):
         output_data = {
             "file": result.file,
@@ -36,22 +37,50 @@ def find_duplicate_images(path):
         }
 
         if result.hash not in hashed_files:
-            hashed_files[result.hash] = output_data
+            hashed_files[result.hash] = [output_data]
         else:
-            log.info(f"{output_data['file']} is a DUPLICATE of {hashed_files[result.hash]['file']}, and should be picked up by the hash-based matching")
+            hashed_files[result.hash].append(output_data)
+    return hashed_files
+
+
+def find_identical_images(hashed_files):
+    identical_images = {}
+
+    log.info("Identifying images that are a perfect match")
+
+    for result in hashed_files:
+        if len(hashed_files[result]) > 1:
+            log.debug(f"Duplicates Found: {hashed_files[result]}")
+            identical_images[result] = hashed_files[result]
+
+    return identical_images
+
+
+def find_similar_images(hashed_files):
+    matches = []
+
+    log.info(f"Identifying images that are a similar match, with a threshold of {FUZZINESS}")
 
     all_hashes = list(hashed_files.keys())
 
     for hash_to_test in all_hashes:
         for hash, data in hashed_files.items():
-            file_to_test = hashed_files[hash_to_test]['file']
-            this_file = data['file']
+            file_to_test = hashed_files[hash_to_test][0]['file']
+            this_file = data[0]['file']
             if file_to_test != this_file:
                 confidence = fuzz.ratio(hash_to_test, hash)
                 if confidence > FUZZINESS:
-                    data["confidence"] = confidence
-                    matches.append([str(confidence)+'%', file_to_test, this_file])
+                    data[0]["confidence"] = confidence
+                    matches.append({
+                        "confidence": str(confidence) + "%",
+                        "origin_file": this_file,
+                        "target_file": this_file,
+                        "origin_result": hashed_files[hash_to_test][0],
+                        "target_result": data[0],
+                    })
 
+    # because we're keying on hash (bad decision?) we end up with every result mirrored - A is 90% like B, B is 90% like A - this dedupes these
+    matches = remove_mirrored_matches(matches)
     return matches
 
 
@@ -61,6 +90,29 @@ def hash_files_parallel(files, num_processes=None):
             if result is not None:
                 yield result
 
+
+def remove_mirrored_matches(matches: dict):
+    for match in matches:
+        mirror = {
+            "confidence": match["confidence"],
+            "origin_file": match["target_file"],
+            "target_file": match["origin_file"],
+            "origin_result": match["origin_result"],
+            "target_result": match["target_result"],
+        }
+        if mirror in matches:
+            matches.remove(mirror)
+    return matches
+
+
+# TODO: can probably use yield here
+def remove_exact_matches(files: dict):
+    filtered = {}
+    for result in files:
+        if len(files[result]) == 1:
+            filtered[result] = files[result]
+
+    return filtered
 
 def is_image(file_name):
     full_supported_formats = ['gif', 'jp2', 'jpeg', 'pcx', 'png', 'tiff', 'x-ms-bmp',

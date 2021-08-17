@@ -8,7 +8,7 @@ from logging.config import dictConfig
 
 from deduplicator.results import print_duplicate_results, print_image_results, save_duplicate_results, save_image_results
 from deduplicator.files import list_all_files, hash_files, delete_duplicates, find_duplicate_hashes
-from deduplicator.images import find_duplicate_images
+from deduplicator.images import find_and_hash_images, find_identical_images, find_similar_images
 
 with open('./logging.json') as file:
     config_dict = json.load(file)
@@ -37,10 +37,12 @@ def start(dir, output, images, delete):
         sys.exit(1)
 
     if images:
-        duplicates = find_duplicate_images(dir)
-        print_image_results(duplicates)
+        images = find_and_hash_images(dir)
+        identical_images = find_identical_images(images)
+        similar_images = find_similar_images(images)
+        print_image_results(identical_images, similar_images)
         if output:
-            save_image_results(output, duplicates)
+            save_image_results(output, identical_images, similar_images)
 
     else:
         all_files = list_all_files(dir)
@@ -51,6 +53,5 @@ def start(dir, output, images, delete):
             save_duplicate_results(output, duplicates)
         if delete:
             delete_duplicates(duplicates)
-
 
     log.info("Script completed")
