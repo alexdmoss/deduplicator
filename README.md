@@ -11,7 +11,7 @@ Code for image duplicate detection pinched from [https://github.com/philipbl/dup
 Uses [Poetry](https://python-poetry.org/docs/), so `poetry install` and then:
 
 1. `poetry run deduplicator --dir /path/to/search --output /file/to/save/results`
-2. `poetry run parse --input /path/to/image-results` - utility script to ask questions of the output
+2. `poetry run parse --input /path/to/image-results --output /path/to/save/output` - utility script to ask questions of the output
 3. For development, `poetry run pytest`
 
 e.g.
