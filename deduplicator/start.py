@@ -17,6 +17,7 @@ with open('./logging.json') as file:
 
 log = logging.getLogger(__name__)
 
+
 @click.command()
 @click.option("--dir", "-d", help="Starting directory for search", type=str, required=True)
 @click.option("--output", "-o", help="Output file for duplicates found", type=str)

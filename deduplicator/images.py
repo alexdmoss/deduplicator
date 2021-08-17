@@ -12,6 +12,7 @@ log = logging.getLogger(__name__)
 
 FUZZINESS = 95
 
+
 @dataclass
 class ImageResult:
     file: str
@@ -23,7 +24,7 @@ class ImageResult:
 
 def find_and_hash_images(path):
     hashed_files = {}
-    
+
     log.info("Building list of all supported image files")
     files = get_image_files(path)
 
@@ -79,7 +80,8 @@ def find_similar_images(hashed_files):
                         "target_result": data[0],
                     })
 
-    # because we're keying on hash (bad decision?) we end up with every result mirrored - A is 90% like B, B is 90% like A - this dedupes these
+    # as we're keying on hash we end up with every result mirrored
+    # - A is 90% like B, B is 90% like A - this dedupes these
     matches = remove_mirrored_matches(matches)
     return matches
 
@@ -113,6 +115,7 @@ def remove_exact_matches(files: dict):
             filtered[result] = files[result]
 
     return filtered
+
 
 def is_image(file_name):
     full_supported_formats = ['gif', 'jp2', 'jpeg', 'pcx', 'png', 'tiff', 'x-ms-bmp',

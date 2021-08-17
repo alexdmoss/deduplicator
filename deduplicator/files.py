@@ -4,6 +4,7 @@ from deduplicator.utils import hash_file
 
 log = logging.getLogger(__name__)
 
+
 def list_all_files(folder: str) -> dict:
     all_files = []
     for dir_name, subdirs, list_of_files in os.walk(folder, True, False, True):
