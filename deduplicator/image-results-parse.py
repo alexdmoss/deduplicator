@@ -9,7 +9,7 @@ import click
 from pathlib import Path
 
 
-THRESHOLD = 98  # filters out results with lower confidence than this
+THRESHOLD = 95  # filters out results with lower confidence than this
 
 
 @click.command()
@@ -30,9 +30,13 @@ def files_with_resolution_above_threshold(input: str, threshold: int):
         result = ast.literal_eval(result)
         confidence = int(result['confidence'].replace('%', ''))
         if confidence >= threshold:
-            _check_for_commas([result['origin_file'], result['origin_file']])
-            entry = f"{result['origin_file']} ({result['origin_result']['resolution']}),"
-            entry += f"{result['target_file']} ({result['target_result']['resolution']})"
+            if _is_second_image_bigger(result['origin_result']['resolution'], result['target_result']['resolution']):
+                # we use | as separator here as lazy way to deal with probable things like comma in filename
+                entry = f"{result['target_file']}|({result['target_result']['resolution']})|"
+                entry += f"{result['origin_file']}|({result['origin_result']['resolution']})"
+            else:
+                entry = f"{result['origin_file']}|({result['origin_result']['resolution']})|"
+                entry += f"{result['target_file']}|({result['target_result']['resolution']})"
             matches.append(entry)
 
     return matches
@@ -45,10 +49,11 @@ def save_duplicate_results(filename: str, results: dict):
             out.write(f"{result}\n")
 
 
-def _check_for_commas(files: List):
-    for file in files:
-        if ',' in file:
-            print(f"[WARN] {file} contains commas!")
+def _is_second_image_bigger(file1, file2):
+    first = int(file1.split()[0])
+    second = int(file2.split()[0])
+    if second > first:
+        return True
 
 
 if __name__ == "__main__":  # pragma: nocover
