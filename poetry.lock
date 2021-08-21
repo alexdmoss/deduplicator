@@ -213,6 +213,20 @@ toml = "*"
 testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
 
 [[package]]
+name = "pytest-mock"
+version = "3.6.1"
+description = "Thin-wrapper around the mock package for easier use with pytest"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+pytest = ">=5.0"
+
+[package.extras]
+dev = ["pre-commit", "tox", "pytest-asyncio"]
+
+[[package]]
 name = "python-json-logger"
 version = "2.0.2"
 description = "A python library adding a json log formatter"
@@ -277,7 +291,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "40aac9c5900b163055d04a31b72154fd0bdbf6da1ccc670546dba5d91e941f5d"
+content-hash = "de95eee50904a0c29095f48fbed6e295738209e9ba0abddd5cbc2942c861852d"
 
 [metadata.files]
 atomicwrites = [
@@ -471,6 +485,10 @@ pytest = [
 pytest-cov = [
     {file = "pytest-cov-2.12.1.tar.gz", hash = "sha256:261ceeb8c227b726249b376b8526b600f38667ee314f910353fa318caa01f4d7"},
     {file = "pytest_cov-2.12.1-py2.py3-none-any.whl", hash = "sha256:261bb9e47e65bd099c89c3edf92972865210c36813f80ede5277dceb77a4a62a"},
+]
+pytest-mock = [
+    {file = "pytest-mock-3.6.1.tar.gz", hash = "sha256:40217a058c52a63f1042f0784f62009e976ba824c418cced42e88d5f40ab0e62"},
+    {file = "pytest_mock-3.6.1-py3-none-any.whl", hash = "sha256:30c2f2cc9759e76eee674b81ea28c9f0b94f8f0445a1b87762cadf774f0df7e3"},
 ]
 python-json-logger = [
     {file = "python-json-logger-2.0.2.tar.gz", hash = "sha256:202a4f29901a4b8002a6d1b958407eeb2dd1d83c18b18b816f5b64476dde9096"},

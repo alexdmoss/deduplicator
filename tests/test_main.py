@@ -1,6 +1,6 @@
-import main
+import deduplicator.main
 
 
 def test_main(mocker):
-    mocker.patch('main.start')
-    main.start()
+    mocker.patch('deduplicator.main.start')
+    deduplicator.main.start()

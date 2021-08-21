@@ -24,29 +24,29 @@
       "handlers": [
         "json"
       ],
-      "level": "DEBUG",
-      "propagate": false
+      "level": "INFO",
+      "propagate": true
     },
     "deduplicator.files": {
       "handlers": [
         "json"
       ],
       "level": "INFO",
-      "propagate": false
+      "propagate": true
     },
     "deduplicator.results": {
       "handlers": [
         "json"
       ],
       "level": "INFO",
-      "propagate": false
+      "propagate": true
     },
     "deduplicator.utils": {
       "handlers": [
         "json"
       ],
       "level": "INFO",
-      "propagate": false
+      "propagate": true
     },
     "root": {
       "level": "INFO",
