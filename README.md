@@ -80,8 +80,9 @@ Now `01-originals/duplicate.jpg` will be kept, and the other two duplicates dele
 
 ## Results
 
-| State                      | # Files | Execution Time |
-| -------------------------- | ------- | -------------- |
-| Before file dupe detection | 66,497  | N/A            |
-| After file dupe dedection  | 27,153  | ~12m30s        |
-| Image Scan, 95% Fuzz       |         | start: 2021-08-17T16:34:37.988744+00:00
+| State                       | # Files | Execution Time |
+| --------------------------- | ------- | -------------- |
+| Before file dupe detection  | 66,497  | N/A            |
+| After file dupe dedection   | 27,153  | ~12m30s        |
+| After delete 100% matches   | 23,031  |                |
+| After delete 95% matches    | 15,976  | (needed multiple runs, likely bug) |

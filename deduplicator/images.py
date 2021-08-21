@@ -38,8 +38,10 @@ def find_and_hash_images(path):
         }
 
         if result.hash not in hashed_files:
+            log.debug(f"Creating new entry with image hash: {result.hash} for file: {output_data['file']}")
             hashed_files[result.hash] = [output_data]
         else:
+            log.debug(f"Adding {output_data['file']} to existing hash: {result.hash}")
             hashed_files[result.hash].append(output_data)
     return hashed_files
 
@@ -74,7 +76,7 @@ def find_similar_images(hashed_files):
                     data[0]["confidence"] = confidence
                     matches.append({
                         "confidence": str(confidence) + "%",
-                        "origin_file": this_file,
+                        "origin_file": file_to_test,
                         "target_file": this_file,
                         "origin_result": hashed_files[hash_to_test][0],
                         "target_result": data[0],

@@ -20,6 +20,8 @@ def save_duplicate_results(filename: str, results: dict):
 def print_image_results(identical_images: dict, similar_images: dict):
     log.info("Displaying image results")
 
+    print(identical_images)
+
     for match in identical_images:
         entry = "Duplicate Images: "
         for result in identical_images[match]:
