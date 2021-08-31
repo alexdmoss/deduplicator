@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 log = logging.getLogger(__name__)
 
-FUZZINESS = 95
+FUZZINESS = 70
 
 
 @dataclass
