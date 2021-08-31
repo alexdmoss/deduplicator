@@ -6,7 +6,7 @@
 # Randomly picks $samples_to_check files from input file then opens the two images
 # from WSL (the machine with all the images on it) using its default image viewer.
 
-samples_to_check=10
+samples_to_check=100
 num_lines=$(wc -l "${1}" | awk '{print $1}')
 
 while [[ $i -lt ${samples_to_check} ]]; do

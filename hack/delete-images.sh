@@ -3,6 +3,7 @@
 # Supply image output file, and it will delete the second image if its 
 # filesize is larger (it should be, from sort in image-results-parse.py) 
 
+i=1
 while read -r line; do
 
     file1=$(echo "${line}" | awk -F\| '{print $1}')
@@ -18,12 +19,14 @@ while read -r line; do
             filesize2=$(stat -c %s "${file2}")
 
             if [[ "${filesize1}" -gt "${filesize2}" ]]; then
-                echo "[INFO] All good, deleting the second file - ${file2}"
+                echo "[INFO] ${i} All good, deleting the second file - ${file2}"
                 rm "${file2}"
+                i=$((i + 1))
             else
                 if [[ "${res1}" == "${res2}" ]]; then
-                    echo "[INFO] Same resolution, deleting the second file - ${file2}"
+                    echo "[INFO] ${i} Same resolution, deleting the second file - ${file2}"
                     rm "${file2}"
+                    i=$((i + 1))
                 else
                     echo "[WARN] ${file2} was larger than ${file1} and resolution did not match"
                 fi
