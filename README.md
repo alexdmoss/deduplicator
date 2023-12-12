@@ -86,4 +86,3 @@ Now `01-originals/duplicate.jpg` will be kept, and the other two duplicates dele
 | After file dupe dedection   | 27,153  | ~12m30s        |
 | After delete 100% matches   | 23,031  |                |
 | After delete 95% matches    | 15,252  | (needed multiple runs, likely bug) |
-

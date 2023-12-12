@@ -1,7 +1,6 @@
-import logging
 from pathlib import Path
 
-log = logging.getLogger(__name__)
+from deduplicator.logging import log
 
 
 def print_duplicate_results(results: dict):

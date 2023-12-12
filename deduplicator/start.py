@@ -1,21 +1,12 @@
 import click
-import logging
-import json
 import sys
 from pathlib import Path
-from logging.config import dictConfig
 
-
+from deduplicator.logging import log
 from deduplicator.results import print_duplicate_results, print_image_results, save_duplicate_results, save_image_results
 from deduplicator.files import list_all_files, hash_files, delete_duplicates, find_duplicate_hashes
 from deduplicator.images import find_and_hash_images, find_identical_images, find_similar_images
 
-with open('./logging.json') as file:
-    config_dict = json.load(file)
-    dictConfig(config_dict)
-
-
-log = logging.getLogger(__name__)
 
 
 @click.command()
@@ -28,7 +19,7 @@ def start(dir, output, images, delete):
     log.info("Script started. Starting directory: " + dir)
 
     if images:
-        log.debug("Visual image comparison is enabled")
+        log.info("Visual image comparison is enabled")
 
     if delete:
         log.info("DELETE mode is enabled - duplicates files will be removed")

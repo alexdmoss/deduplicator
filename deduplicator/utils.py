@@ -1,9 +1,8 @@
 from time import time
 import hashlib
 import random
-import logging
 
-log = logging.getLogger(__name__)
+from deduplicator.logging import log
 
 
 def hash_file(path, blocksize=2**20):

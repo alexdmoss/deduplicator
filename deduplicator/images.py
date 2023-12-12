@@ -1,4 +1,3 @@
-import logging
 import magic
 import concurrent.futures
 import os
@@ -7,8 +6,8 @@ import imagehash
 from fuzzywuzzy import fuzz
 from dataclasses import dataclass
 
+from deduplicator.logging import log
 
-log = logging.getLogger(__name__)
 
 FUZZINESS = 70
 
@@ -38,10 +37,10 @@ def find_and_hash_images(path):
         }
 
         if result.hash not in hashed_files:
-            log.debug(f"Creating new entry with image hash: {result.hash} for file: {output_data['file']}")
+            log.info(f"Creating new entry with image hash: {result.hash} for file: {output_data['file']}")
             hashed_files[result.hash] = [output_data]
         else:
-            log.debug(f"Adding {output_data['file']} to existing hash: {result.hash}")
+            log.info(f"Adding {output_data['file']} to existing hash: {result.hash}")
             hashed_files[result.hash].append(output_data)
     return hashed_files
 
@@ -53,7 +52,7 @@ def find_identical_images(hashed_files):
 
     for result in hashed_files:
         if len(hashed_files[result]) > 1:
-            log.debug(f"Duplicates Found: {hashed_files[result]}")
+            log.info(f"Duplicates Found: {hashed_files[result]}")
             identical_images[result] = hashed_files[result]
 
     return identical_images
