@@ -6,7 +6,7 @@ import imagehash
 from fuzzywuzzy import fuzz
 from dataclasses import dataclass
 
-from deduplicator.logging import log
+from deduplicator.logger import log
 
 
 FUZZINESS = 70

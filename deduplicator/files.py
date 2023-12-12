@@ -1,6 +1,6 @@
 import os
 
-from deduplicator.logging import log
+from deduplicator.logger import log
 from deduplicator.utils import hash_file
 
 

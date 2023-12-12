@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from deduplicator.logging import log
+from deduplicator.logger import log
 
 
 def print_duplicate_results(results: dict):

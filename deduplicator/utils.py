@@ -2,7 +2,7 @@ from time import time
 import hashlib
 import random
 
-from deduplicator.logging import log
+from deduplicator.logger import log
 
 
 def hash_file(path, blocksize=2**20):

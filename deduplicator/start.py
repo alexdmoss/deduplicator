@@ -2,7 +2,7 @@ import click
 import sys
 from pathlib import Path
 
-from deduplicator.logging import log
+from deduplicator.logger import log
 from deduplicator.results import print_duplicate_results, print_image_results, save_duplicate_results, save_image_results
 from deduplicator.files import list_all_files, hash_files, delete_duplicates, find_duplicate_hashes
 from deduplicator.images import find_and_hash_images, find_identical_images, find_similar_images
