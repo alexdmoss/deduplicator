@@ -37,21 +37,13 @@ def hash_files(list_of_files):
 
     for result in hash_files_parallel(list_of_files):
         if result is not None:
-
             if result.hash not in hashed_files:
                 hashed_files[result.hash] = [result.file]
             else:
                 hashed_files[result.hash].append(result.file)
 
     return hashed_files
-    # for file in list_of_files:
-    #     file_hash = hash_file(file)
-    #     log.debug(f"Hash of file {file} was {file_hash}")
-    #     if file_hash in hashed_files:
-    #         hashed_files[file_hash].append(file)
-    #     else:
-    #         hashed_files[file_hash] = [file]
-    # return hashed_files
+
 
 
 def delete_duplicates(results: dict):
@@ -71,8 +63,9 @@ def find_duplicate_hashes(all_files: dict) -> dict:
     return duplicates
 
 
-def hash_file(path, blocksize=2**22):
-    m = hashlib.sha256()
+def hash_file(path, blocksize=2**25):
+    log.info(f"Hashing {path}")
+    m = hashlib.md5()
     try:
         with open(path, "rb") as f:
             while True:
@@ -80,7 +73,7 @@ def hash_file(path, blocksize=2**22):
                 if not buf:
                     break
                 m.update(buf)
-        log.debug(f"Hashed {path}")
+        
         return FileResult(file=path, hash=m.hexdigest())
     except FileNotFoundError:
         log.error("File not found: " + path)
